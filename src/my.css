@@ -1,0 +1,215 @@
+/* ---------------------------------------------------------------------------------------------------------------------
+MY EMAIL STYLES */
+
+body
+{
+	background-color: #FFF;
+}
+
+.header
+{
+	background-color: #FFF;
+	background-image: url("images/header-tile.png");
+	background-repeat: repeat-x;
+}
+
+#edition
+{
+	color: #999;
+}
+
+.chat-intro
+{
+	background-color: #FFF;
+}
+
+.band-1, .band-2, .band-3
+{
+	background-color: #FFF;
+}
+
+.band-pre-footer
+{
+	background-color: #f2f7f3;
+}
+
+.story-1, .story-2, .story-3
+{
+}
+
+table.columns td.pic-bg
+{
+	background-color: #bbba9d;
+	background-image: url("images/murky-stripe.gif");
+	padding-bottom: 0  !important;
+}
+
+td.pic-bg img
+{
+	max-height: 150px;
+	border-left: 5px #FFF solid;
+	border-right: 5px #FFF solid;
+}
+
+.footer td
+{
+	color: #cfdbc9;
+	background-color: #646341;
+}
+
+.footer a
+{
+	color: #cfdbc9;
+}
+
+.footer a.unsub
+{
+	padding-top: 5px;
+	font-size: 11px;
+	display: block;
+	text-align: center;
+	color: #a9b3a4;
+}
+
+.footer a:hover
+{
+	color: #ebffff;
+}
+
+/* ----------
+TYPOGRAPHY */
+
+h1, h2, h3
+{
+	font-weight: bold;
+	color: #4f85b3;
+	font-size: 22px;
+	margin-bottom: 10px;
+}
+
+
+h2, h3
+{
+	font-size: 18px;
+	margin-bottom: 7px;
+}
+
+h3
+{
+	color: #a3b3a1;
+	font-weight: normal;
+}
+
+h2 img
+{
+	float: right;
+}
+
+p.small
+{
+	font-size: 10px;
+	line-height: 12px;
+}
+
+a
+{
+	color: #496ea6;
+}
+
+hr
+{
+	background-color: #9f9e6c;
+	border-bottom: 1px #9f9e6c solid;
+	height: 0;
+}
+
+/* ----------
+BUTTONS */
+
+table.button td,
+table.tiny-button td,
+table.small-button td,
+table.medium-button td,
+table.large-button td
+{
+	background: #5581c2;
+}
+
+table.button td a,
+table.tiny-button td a,
+table.small-button td a,
+table.medium-button td a,
+table.large-button td a
+{
+	font-weight: normal;
+}
+
+table.secondary td
+{
+	background: #cfdbc9;
+}
+
+#story-1-button, #story-2-button, #story-3-button
+{
+	float: right;
+	width: auto;
+}
+
+#story-1-button td, #story-2-button td, #story-3-button td
+{
+	width: 150px !important;
+}
+
+.nowrap
+{
+	white-space: nowrap;
+}
+
+/* --------------
+ACCOUNT STATUS */
+
+table.stripey
+{
+	width: 100%;
+    border-spacing: 2px;
+    border-collapse: separate;
+}
+
+table.stripey tr th
+{
+	font-weight: normal;
+	color: #646341;
+	background-color: #dbe5d5;
+	padding: 2px 2px 2px 10px;
+} 
+
+table.stripey tr td
+{
+	background-color: #EEE;
+	padding: 2px 2px 2px 10px;
+} 
+
+table.stripey tr:nth-child(even) td
+{
+	background-color: #FAFAFA;
+} 
+
+table.account-status
+{
+	margin-bottom: 15px;
+	background-color: #a3b3a1;
+}
+
+table.account-status td
+{
+	font-size: 11px;
+}
+
+@media only screen and (min-width: 600px)
+{
+	table.account-status td
+	{
+		font-size: 13px;
+	}
+}
+

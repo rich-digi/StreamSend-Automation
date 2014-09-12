@@ -1,0 +1,28 @@
+{
+  "name": "dmNews-GruntTest",
+  "version": "1.0.0",
+  "description": "dmNews Workflow - prepare email, upload email and customer data to Streamsend, then test and send",
+  "readme": "Stop Moaning, Just Grunt",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "RAK",
+  "license": "ISC",
+  "devDependencies": {
+    "async": "^0.9.0",
+    "grunt": "*",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-copy": "*",
+    "grunt-css-url-rewrite": "*",
+    "grunt-exec": "*",
+    "grunt-ftp-push": "*",
+    "grunt-premailer": "^0.2.10",
+    "grunt-processhtml": "*",
+    "grunt-string-replace": "*",
+    "grunt-uncss": "*",
+    "mysql": "^2.4.3",
+    "underscore": "*",
+    "xml2js": "^0.4.4"
+  }
+}

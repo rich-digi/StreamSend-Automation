@@ -1,0 +1,39 @@
+<import>
+	<reactivate>false</reactivate>
+	<lists>176</lists>
+	<upload-id>{{UPLOAD-ID}}</upload-id>
+	<ignore-first-row>true</ignore-first-row>
+	<separator>Tab</separator>
+	<columns>
+		<column>email_address</column>
+		<column>24</column>
+		<column>26</column>
+		<column>28</column>
+		<column>30</column>
+		<column>34</column>
+		<column>36</column>
+		<column>32</column>
+		<column> </column>
+		<column>38</column>
+		<column>48</column>
+		<column>58</column>
+		<column>70</column>
+		<column>40</column>
+		<column>50</column>
+		<column>60</column>
+		<column>72</column>
+		<column>42</column>
+		<column>52</column>
+		<column>62</column>
+		<column>74</column>
+		<column>44</column>
+		<column>54</column>
+		<column>64</column>
+		<column>76</column>
+		<column>46</column>
+		<column>56</column>
+		<column>66</column>
+		<column>78</column>
+		<column>68</column>
+	</columns>
+</import>
