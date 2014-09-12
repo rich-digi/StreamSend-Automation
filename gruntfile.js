@@ -434,6 +434,16 @@ module.exports = function(grunt)
 					}
 				}
 			},
+			'compile_primary_dmids':
+			{
+				cmd: 'python compile_primary_dmids.py',
+				callback: function (error, stdout, stderr)
+				{
+					console.log();
+					console.log('PRIMARY DMID COMPILATION DONE');
+					console.log();
+				}
+			},
 			'db_import':
 			{
 				cmd: function()
