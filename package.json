@@ -22,6 +22,7 @@
     "grunt-string-replace": "*",
     "grunt-uncss": "*",
     "mysql": "^2.4.3",
+    "shelljs": "^0.3.0",
     "underscore": "*",
     "xml2js": "^0.4.4"
   }

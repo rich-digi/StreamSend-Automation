@@ -11,6 +11,11 @@ module.exports = function(grunt)
 	var ftp_user = 'emma';
 	var ftp_pass = 'ommatron';
 	
+	// Database CLI and credentials
+	var db_cli  = '/Applications/MAMP/Library/bin/mysql';
+	var db_user = 'root';
+	var db_pass = 'root88';
+
  	// -----------------------------------------------------------------------------------------------------------------
  	// VARIABLE PREPARATION
 
@@ -32,6 +37,10 @@ module.exports = function(grunt)
 	var global_config = {
 		streamsend_api_credentials	: n,
 		streamsend_api_base_64		: b,
+		db_cli   : db_cli,
+		db_user  : db_user,
+		db_pass  : db_pass,
+		ftp_host : ftp_host,
 		ftp_host : ftp_host,
 		ftp_user : ftp_user,
 		ftp_pass : ftp_pass,
@@ -444,17 +453,54 @@ module.exports = function(grunt)
 					console.log();
 				}
 			},
+			'db_create':
+			{
+				cmd: function()
+				{
+					var sql = [];
+					session.db_name = 'dmnews_' + this_email.streamsend_name.replace(/-/g, '_');
+					sql.push('DROP DATABASE IF EXISTS ' + session.db_name);
+					sql.push('CREATE DATABASE ' + session.db_name);
+					sql.push('USE ' + session.db_name);
+					sql.push('');
+					sql = sql.join(';\n');
+					grunt.file.write('sql/create_database.sql', sql);
+					var credentials = ' -u' + global_config.db_user + ' -p' + global_config.db_pass
+					return 'cat sql/create_database.sql sql/define_tables.sql | ' + global_config.db_cli + credentials;
+				},
+				callback: function (error, stdout, stderr)
+				{
+					if (stderr)
+					{
+						console.log(stderr);
+					}
+					else
+					{
+						console.log();
+						console.log('DATABASE CREATION DONE - created ', session.db_name);
+						console.log();
+					}
+				}
+			},
 			'db_import':
 			{
 				cmd: function()
 				{
-					return 'node db_import.js';
+					session.db_name = 'dmnews_' + this_email.streamsend_name.replace(/-/g, '_');
+					return 'node db_import.js ' + [global_config.db_user, global_config.db_pass, session.db_name].join(' ');
 				},
 				callback: function (error, stdout, stderr)
 				{
-					console.log();
-					console.log('DATABASE IMPORT DONE');
-					console.log();
+					if (stderr)
+					{
+						console.log(stderr);
+					}
+					else
+					{
+						console.log();
+						console.log('DATABASE IMPORT DONE');
+						console.log();
+					}
 				}
 			}
 		},
@@ -655,7 +701,7 @@ module.exports = function(grunt)
 	});
 	grunt.registerTask('test', ['string-replace:test', 'exec:blast']);
 	grunt.registerTask('send', ['string-replace:send', 'exec:blast']);
-	grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:db_import']);
+	grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:compile_primary_dmids', 'exec:db_create', 'exec:db_import']);
 	
 	grunt.registerTask('get-links', ['exec:get_links']);
 	grunt.registerTask('get-clicks', ['exec:count_clicks_or_views:clicks', 'get-c-or-v-looper']);

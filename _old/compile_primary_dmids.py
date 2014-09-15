@@ -5,7 +5,7 @@
 import glob, csv
 output = open('reports/primary_dmid_link.tsv', 'wb')
 writer = csv.writer(output, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
-writer.writerow(['Email', 'PrimaryDMID'])
+writer.writerow(['MDID', 'Email', 'PrimaryDMID'])
 extract_cols = [0, 1]
 total = 0
 for file in glob.glob('custdata/report*.txt'):
@@ -15,7 +15,7 @@ for file in glob.glob('custdata/report*.txt'):
 	for row in reader:
 		if rownum > 0:
 			total  += 1
-			content = list(row[i] for i in extract_cols)
+			content = [total] + list(row[i] for i in extract_cols)
 			writer.writerow(content)
 			# print content #Exceeds may stdout buffer size when called from grunt, hence commented out
 		rownum += 1
