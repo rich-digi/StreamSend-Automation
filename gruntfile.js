@@ -46,8 +46,8 @@ module.exports = function(grunt)
 		ftp_pass : ftp_pass,
 		schedule : blast_time
 	};
-	var imps 		= {};
-  	var session 	= {};
+	var imps 	= {};
+  	var session = {};
 
  	// -----------------------------------------------------------------------------------------------------------------
  	// UTILITY FUNCTIONS

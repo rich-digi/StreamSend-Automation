@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------------------------------------------------
-// Load the details of the people who clicked into the 'dmnews_reports' database
+// Load the details of the people who clicked into the 'dmnews_N_YY_MM_A' database
 // ---------------------------------------------------------------------------------------------------------------------
 
 // Get command-line args
@@ -158,8 +158,9 @@ step.reconcile_viewers_primary_dmids = function(outercallback)
 step.export_clicks_report = function(outercallback)
 {
 	try { fs.unlinkSync('reports/clicks.csv'); } catch(e) {};
+	var rep = 'clicks' + dbcred.daba.split('_').slice(1).join('-') + '.csv';
 	var sql = 'SELECT Email, PrimaryDMID, URL, Time, IPAddress, UserAgent ' +
-				'INTO OUTFILE "' + __dirname + '/reports/clicks.csv" ' +
+				'INTO OUTFILE "' + __dirname + '/reports/' + rep + '" ' +
 				'FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY "\\"" ' + 
 				'ESCAPED BY "\\\\" ' + 
 				'LINES TERMINATED BY "\\n" ' + 
@@ -174,8 +175,9 @@ step.export_clicks_report = function(outercallback)
 step.export_views_report = function(outercallback)
 {
 	try { fs.unlinkSync('reports/views.csv'); } catch(e) {};
+	var rep = 'views' + dbcred.daba.split('_').slice(1).join('-') + '.csv';
 	var sql = 'SELECT Email, PrimaryDMID, Time, IPAddress, UserAgent ' +
-				'INTO OUTFILE "' + __dirname + '/reports/views.csv" ' +
+				'INTO OUTFILE "' + __dirname + '/reports/' + rep + '" ' +
 				'FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY "\\"" ' + 
 				'ESCAPED BY "\\\\" ' + 
 				'LINES TERMINATED BY "\\n" ' + 
