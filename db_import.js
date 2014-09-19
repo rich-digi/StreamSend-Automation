@@ -158,7 +158,7 @@ step.reconcile_viewers_primary_dmids = function(outercallback)
 step.export_clicks_report = function(outercallback)
 {
 	try { fs.unlinkSync('reports/clicks.csv'); } catch(e) {};
-	var rep = 'clicks' + dbcred.daba.split('_').slice(1).join('-') + '.csv';
+	var rep = dbcred.daba.split('_').slice(1).join('-') + '-clicks.csv';
 	var sql = 'SELECT Email, PrimaryDMID, URL, Time, IPAddress, UserAgent ' +
 				'INTO OUTFILE "' + __dirname + '/reports/' + rep + '" ' +
 				'FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY "\\"" ' + 
@@ -175,7 +175,7 @@ step.export_clicks_report = function(outercallback)
 step.export_views_report = function(outercallback)
 {
 	try { fs.unlinkSync('reports/views.csv'); } catch(e) {};
-	var rep = 'views' + dbcred.daba.split('_').slice(1).join('-') + '.csv';
+	var rep = dbcred.daba.split('_').slice(1).join('-') + '-views.csv';
 	var sql = 'SELECT Email, PrimaryDMID, Time, IPAddress, UserAgent ' +
 				'INTO OUTFILE "' + __dirname + '/reports/' + rep + '" ' +
 				'FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY "\\"" ' + 
