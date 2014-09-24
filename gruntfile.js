@@ -191,6 +191,24 @@ module.exports = function(grunt)
 					}
 				}
 			},
+			create_broadcast_list:
+			{
+				cmd: function()
+				{
+					var listxml = grunt.file.read('xml/list.create..template.xml');
+					listxml = listxml.replace('{{LIST-NAME}}', this_email.streamsend_name.'-Broadcast');					
+					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/lists.xml" -d ' + listxml;
+				},
+				callback: function (error, stdout, stderr)
+				{
+					var regex = /Location: http:\/\/app.streamsend.com\/audiences\/2\/(\d+)/;
+					var arr = regex.exec(stdout);
+					this_email.list_id = arr[1];
+					grunt.log.write('List ID is: ' + this_email.list_id);
+					grunt.log.write();
+					grunt.file.write('settings.json', JSON.stringify(this_email, null, 2)); // Save the list ID
+				}
+			},
 			upload_custdata:
 			{
 				cmd: function(file_to_upload)
@@ -218,6 +236,7 @@ module.exports = function(grunt)
 				{
 					session.current_file = i;
 					var impxml = grunt.file.read('xml/import.template.xml');
+					impxml = impxml.replace('{{LIST-ID}}', settings.list_id);
 					impxml = impxml.replace('{{UPLOAD-ID}}', imps[i].upload_id);
 					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/imports.xml" -d "' + impxml + '"';
 				},
@@ -579,6 +598,10 @@ module.exports = function(grunt)
 							replacement: this_email.id
 						},
 						{
+							pattern: '{{LIST-ID}}',
+							replacement: this_email.list_id
+						},
+						{
 							pattern: '{{BLAST-TIME}}',
 							replacement: global_config.schedule
 						}
@@ -611,6 +634,9 @@ module.exports = function(grunt)
 			break;
 		case 'list-fields':
 			title = 'LIST MERGE FIELDS ( numerical ID - name )';
+			break;
+		case 'create-broadcast-list':
+			title = 'CREATE BRAODCAST LIST';
 			break;
 		case 'upload-custdata':
 			title = 'UPLOAD AND IMPORT CUSTOMER DATA';
@@ -665,6 +691,7 @@ module.exports = function(grunt)
 		console.log();
 		console.log('grunt upload-email');
 		console.log('grunt list-fields');
+		console.log('grunt create-broadcast-list');
 		console.log('grunt upload-custdata');
 		console.log('grunt check-import-status');
 		console.log('grunt test');
@@ -675,6 +702,7 @@ module.exports = function(grunt)
 		console.log();
 	});
 	grunt.registerTask('upload-email', ['copy', 'uncss', 'cssUrlRewrite', 'processhtml', 'premailer', 'concat', etask, 'ftp_push']);
+	grunt.registerTask('create-broadcast-list', ['exec:create_broadcast_list']);
 	grunt.registerTask('list-fields', ['exec:list_fields']);
 	grunt.registerTask('upload-custdata', 'Uploading the Customer Data TSVs to Streamsend', function() {
 		grunt.log.writeln('Uploading the Customer Data TSVs to Streamsend and Initiating Import');

@@ -1,6 +1,6 @@
 <import>
 	<reactivate>false</reactivate>
-	<lists>176</lists>
+	<lists>{{LIST-ID}}</lists>
 	<upload-id>{{UPLOAD-ID}}</upload-id>
 	<ignore-first-row>true</ignore-first-row>
 	<separator>Tab</separator>

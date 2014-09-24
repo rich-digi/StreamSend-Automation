@@ -5,6 +5,7 @@
 	</from>
 	<to>
 		<audience-id>2</audience-id>
+		<include-lists>{{LIST-ID}}</include-lists>
 	</to>
 	<subject>{{SUBJECT}}</subject>
 	<body>
