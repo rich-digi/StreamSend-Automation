@@ -8,7 +8,7 @@ extract_cols = range(30)
 total = 0
 for file in glob.glob('custdata/report*.txt'):
 	fileno = re.match(r'custdata/report(\d+).txt', file)
-	output = open('reports/processed' + fileno.group(1) + '.tsv', 'wb')
+	output = open('custdata/report_processed' + fileno.group(1) + '.tsv', 'wb')
 	writer = csv.writer(output, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
 	tsv = open(file, 'rU')
 	reader = csv.reader(tsv, delimiter='\t')
