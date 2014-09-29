@@ -196,7 +196,7 @@ module.exports = function(grunt)
 				cmd: function()
 				{
 					var listxml = grunt.file.read('xml/list.create..template.xml');
-					listxml = listxml.replace('{{LIST-NAME}}', this_email.streamsend_name.'-Broadcast');					
+					listxml = listxml.replace('{{LIST-NAME}}', this_email.streamsend_name + '-Broadcast');					
 					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/lists.xml" -d ' + listxml;
 				},
 				callback: function (error, stdout, stderr)
