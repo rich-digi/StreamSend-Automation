@@ -195,13 +195,14 @@ module.exports = function(grunt)
 			{
 				cmd: function()
 				{
-					var listxml = grunt.file.read('xml/list.create..template.xml');
-					listxml = listxml.replace('{{LIST-NAME}}', this_email.streamsend_name + '-Broadcast');					
-					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/lists.xml" -d ' + listxml;
+					var listxml = grunt.file.read('xml/list.create.template.xml');
+					listxml = listxml.replace('{{LIST-NAME}}', this_email.streamsend_name + '-Broadcast');
+									
+					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/lists.xml" -d "' + listxml + '"';
 				},
 				callback: function (error, stdout, stderr)
 				{
-					var regex = /Location: http:\/\/app.streamsend.com\/audiences\/2\/(\d+)/;
+					var regex = /Location: http:\/\/app.streamsend.com\/audiences\/2\/lists\/(\d+)/;
 					var arr = regex.exec(stdout);
 					this_email.list_id = arr[1];
 					grunt.log.write('List ID is: ' + this_email.list_id);
@@ -213,7 +214,7 @@ module.exports = function(grunt)
 			{
 				cmd: function(file_to_upload)
 				{
-					var regex = /custdata\/(\w+).txt/;
+					var regex = /custdata\/(\w+).tsv/;
 					var arr = regex.exec(file_to_upload);
 					session.current_file = arr[1];
 					console.log(session.current_file);
@@ -236,7 +237,7 @@ module.exports = function(grunt)
 				{
 					session.current_file = i;
 					var impxml = grunt.file.read('xml/import.template.xml');
-					impxml = impxml.replace('{{LIST-ID}}', settings.list_id);
+					impxml = impxml.replace('{{LIST-ID}}', this_email.list_id);
 					impxml = impxml.replace('{{UPLOAD-ID}}', imps[i].upload_id);
 					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/imports.xml" -d "' + impxml + '"';
 				},
@@ -310,7 +311,7 @@ module.exports = function(grunt)
 					{
 						case '201':
 							// Get the Blast ID
-							var regex = /Location: http:\/\/app.streamsend.com\/audiences\/2\/blasts\/(\d+)/;
+							var regex = /Location: http:\/\/app.streamsend.com\/blasts\/(\d+)/;
 							var arr = regex.exec(stdout);
 							var id = arr[1];
 							this_email.blast_id = arr[1];
@@ -707,7 +708,7 @@ module.exports = function(grunt)
 	grunt.registerTask('upload-custdata', 'Uploading the Customer Data TSVs to Streamsend', function() {
 		grunt.log.writeln('Uploading the Customer Data TSVs to Streamsend and Initiating Import');
 		imps = {}; // Reset this for each import cycle
-		var files = grunt.file.expand('custdata/report*.txt');
+		var files = grunt.file.expand('custdata/processed*.tsv');
 		console.dir(files);
 		files.forEach(function(f) { 
 			grunt.task.run('exec:upload_custdata:' + f);
