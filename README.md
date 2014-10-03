@@ -7,11 +7,15 @@ Handles:
 
 * Uploading emails (including CSS inlining, rewriting links, and uploading images)
 * Creation of StreamSend mailing lists
+* Customer data processing (greeting generation: Dear Sam, Dear Mr Samuels, etc.)
 * Upload and import of customer data
-* Sending test emails
-* Mailing the whole lists
-* Post-blast reporting (getting viewers and clickers).
+* Test broadcasts
+* Real braodcasts
+* Post-broadcast reporting (getting viewers and clickers).
 
-Uses Grunt, Node, Python and Sed, and depends on MySQL for reporting.
+Technologies used
+-----------------
+
+Grunt, Node, Python, Curl, Sed, and MySQL.
 
 
