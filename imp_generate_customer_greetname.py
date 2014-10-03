@@ -66,41 +66,46 @@ def make_greeting(title, firstname, lastname, company):
 # --------------------------------------------------------------------------------
 # RUN
 
-total = 0
-for file in glob.glob('custdata/report*.txt'):
-	fileno = re.match(r'custdata/report(\d+).txt', file)
-	output = open('custdata/processed' + fileno.group(1) + '.tsv', 'wb')
-	writer = csv.writer(output, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
-	tsv = open(file, 'rU')
-	reader = csv.reader(tsv, delimiter='\t')
-	rownum = 0
-	for row in reader:
-		content = list(row[i] for i in extract_cols)
-		if rownum == 0:
-			# Write header row
-			writer.writerow(content[0:8] + content[13:33])
-			# writer.writerow(content)
-		else:
-			total  += 1
-			ori = content[3] # CustomerGreetName is column 4
+def run():
+	total = 0
+	for file in glob.glob('custdata/report*.txt'):
+		fileno = re.match(r'custdata/report(\d+).txt', file)
+		output = open('custdata/processed' + fileno.group(1) + '.tsv', 'wb')
+		writer = csv.writer(output, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
+		tsv = open(file, 'rU')
+		reader = csv.reader(tsv, delimiter='\t')
+		rownum = 0
+		for row in reader:
+			content = list(row[i] for i in extract_cols)
+			if rownum == 0:
+				# Write header row
+				writer.writerow(content[0:8] + content[13:33])
+				# writer.writerow(content)
+			else:
+				total  += 1
+				ori = content[3] # CustomerGreetName is column 4
 			
-			# Extract data from row
-			title 		= content[9]
-			firstname 	= content[10]
-			lastname 	= content[11]
-			company 	= content[12]
+				# Extract data from row
+				title 		= content[9]
+				firstname 	= content[10]
+				lastname 	= content[11]
+				company 	= content[12]
 
-			cgn = make_greeting(title, firstname, lastname, company)
+				cgn = make_greeting(title, firstname, lastname, company)
 						
-			print '{:40s}      {:40s}'.format(ori, cgn)
-			content[3] = cgn
-			writer.writerow(content[0:8] + content[13:33])
-			# writer.writerow(content)
-		rownum += 1
-	tsv.close()
-	output.close()
-print
-print total, 'lines processed'
-print 'DONE'
-print
+				print '{:40s}      {:40s}'.format(ori, cgn)
+				content[3] = cgn
+				writer.writerow(content[0:8] + content[13:33])
+				# writer.writerow(content)
+			rownum += 1
+		tsv.close()
+		output.close()
+	print
+	print total, 'lines processed'
+	print 'DONE'
+	print
+	
+if __name__ == '__main__':
+    run()
+
 
