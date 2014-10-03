@@ -47,15 +47,12 @@ def make_greeting(title, firstname, lastname, company):
 	if not re.match(camel_matcher, company):
 		company = company.lower().title()
 	
-	title 		= re.sub('\.', '', title)
-	firstname 	= re.sub(invalid_matcher, '', firstname)
-	lastname 	= re.sub(invalid_matcher, '', lastname)
-	
 	firstnames = re.split('\s|(?<!\d)[,.](?!\d)', firstname)
 	if len(firstnames) and len(firstnames[0]) > 2:
 		cgn = firstnames[0]
 
 	elif len(lastname) > 2 and title:
+		title = re.sub('\.', '', title)
 		if title not in ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr']:
 			return fallback
 		if lastname[0:2] == 'Mc':
