@@ -1,9 +1,16 @@
 StreamSend-Automation
 =====================
 
-Code to automate processing emails (CSS inlining, text version generation), upload to StreamSend, upload of images, creation of StreamSend mailing lists, upload and import of customer data, sending (to test list and entire list).
+Code to automate email post-processing (CSS inlining, text version generation) and interaction with StreamSend.
 
-Also handles post-blast reporting (getting viewers and clickers).
+Handles
+
+* Uploading emails (including CSS inlining, rewriting links, and uploading images)
+• Creation of StreamSend mailing lists
+• Upload and import of customer data
+* Sending test emails
+* Mailing the whole lists
+* Post-blast reporting (getting viewers and clickers).
 
 Uses Grunt, Node, Python and Sed.
 
