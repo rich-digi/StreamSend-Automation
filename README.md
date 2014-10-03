@@ -1,7 +1,7 @@
 StreamSend-Automation
 =====================
 
-Code to automate email post-processing (CSS inlining, text version generation) and interaction with StreamSend.
+Code to automate email post-processing and interaction with StreamSend.
 
 Handles:
 
