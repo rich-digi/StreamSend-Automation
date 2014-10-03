@@ -75,44 +75,6 @@ def make_greeting(title, firstname, lastname, company):
 		cgn = fallback
 			
 	return cgn
-
-# --------------------------------------------------------------------------------
-# process_data function
-
-def process_data(input_pattern, column_positions, output_prefix, joiner_function):
-	
-	cp = column_positions	
-	total = 0
-	for file in glob.glob(input_pattern):
-		fileno = re.match(r'.*(\d+).txt', file)
-		output = open(output_prefix + fileno.group(1) + '.tsv', 'wb')
-		writer = csv.writer(output, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
-		tsv = open(file, 'rU')
-		reader = csv.reader(tsv, delimiter='\t')
-		rownum = 0
-		for row in reader:
-			extract_cols = range(len(row))
-			content = list(row[i] for i in extract_cols)
-			if rownum == 0:
-				# Write header row
-				writer.writerow(joiner_function(content))
-			else:
-				# Extract data from row
-				title 		= content[cp['title']]
-				firstname 	= content[cp['firstname']]
-				lastname 	= content[cp['lastname']]
-				company 	= content[cp['company']]
-
-				cgn = make_greeting(title, firstname, lastname, company)
-						
-				print '{:20s}      {:40s}      {:40s}      {:40s}      {:40s}'.format(title, firstname, lastname, company, cgn)
-				content[cp['result']] = cgn
-				writer.writerow(joiner_function(content))
-				total  += 1
-			rownum += 1
-		tsv.close()
-		output.close()
-	return total
 	
 # --------------------------------------------------------------------------------
 # process_data function
