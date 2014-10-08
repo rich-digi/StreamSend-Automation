@@ -128,11 +128,11 @@ step.add_unique_click_count = function(outercallback)
 {
 	var sql = 'UPDATE Links JOIN ' +
 				'( ' +
-					'SELECT Links.LinkID, URL, COUNT(DISTINCT(Email)) AS Clicks ' +
+					'SELECT Links.LinkID, URL, COUNT(DISTINCT(Email)) AS UniqueClicks ' +
 						'FROM Links JOIN Clickers ON Links.LinkID = Clickers.LinkID ' +
 						'GROUP BY LinkID ORDER BY LinkID ' +
 				') AS DT ' +
-			'ON Links.LinkID = DT.LinkID SET Links.UniqueClicks = DT.Clicks';
+			'ON Links.LinkID = DT.LinkID SET Links.UniqueClicks = DT.UniqueClicks';
 	db.query(sql, function(err, res) { console.log('DONE Adding unique click count by link'); outercallback(); });
 }
 
