@@ -4,7 +4,7 @@
 
 import glob, csv
 output = open('reports/primary_dmid_link.tsv', 'wb')
-writer = csv.writer(output, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
+writer = csv.writer(output, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL, lineterminator='\n')
 writer.writerow(['Email', 'PrimaryDMID'])
 extract_cols = [0, 1]
 total = 0

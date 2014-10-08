@@ -23,4 +23,15 @@ SELECT Email, PrimaryDMID, Time, IPAddress, UserAgent
 		LINES TERMINATED BY '\n'
 	FROM Viewers
 	ORDER BY PrimaryDMID
-	
+
+#
+# Count clicks by link
+#
+
+UPDATE Links JOIN 
+	(
+		SELECT Links.LinkID, URL, COUNT(DISTINCT(Email)) AS Clicks
+			FROM Links JOIN Clickers ON Links.LinkID = Clickers.LinkID
+			GROUP BY LinkID ORDER BY LinkID
+	) AS DT
+ON Links.LinkID = DT.LinkID SET Links.Clicks = DT.Clicks

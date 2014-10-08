@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS `Clickers`;
 CREATE TABLE `Clickers` (
   `CID` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `LinkID` int(11) DEFAULT NULL,
-  `EmailID` int(11) DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
   `PrimaryDMID` varchar(128) DEFAULT NULL,
   `Time` datetime DEFAULT NULL,
@@ -18,20 +17,6 @@ CREATE TABLE `Clickers` (
   `UserAgent` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`CID`),
   KEY `Email` (`Email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Table Emails
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `Emails`;
-
-CREATE TABLE `Emails` (
-  `EmailID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `Email` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`EmailID`),
-  UNIQUE KEY `Email` (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -44,6 +29,7 @@ DROP TABLE IF EXISTS `Links`;
 CREATE TABLE `Links` (
   `LinkID` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `URL` varchar(255) DEFAULT NULL,
+  `UniqueClicks` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`LinkID`),
   UNIQUE KEY `URL` (`URL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -72,7 +58,6 @@ DROP TABLE IF EXISTS `Viewers`;
 
 CREATE TABLE `Viewers` (
   `VID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `EmailID` int(11) DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
   `PrimaryDMID` varchar(128) DEFAULT NULL,
   `Time` datetime DEFAULT NULL,

@@ -2,7 +2,7 @@
 # Add PrimaryDMIDs to the records in the Viewers and Clickers tables
 #
 
-LOAD DATA LOCAL INFILE '/Users/richardknight/Documents/WORKAREA/DML/_GIT/StreamSend-Automation/reports/primary_dmid_link.tsv'
+LOAD DATA LOCAL INFILE '/Users/richardknight/Documents/WORKAREA/DML/dmNews-Oct14/reports/primary_dmid_link.tsv'
 		INTO TABLE dmnews_reports.PDMIDLink
 		FIELDS TERMINATED BY '\t' OPTIONALLY ENCLOSED BY '"'
 		ESCAPED BY '\\'

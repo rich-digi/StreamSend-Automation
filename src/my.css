@@ -4,6 +4,7 @@ MY EMAIL STYLES */
 body
 {
 	background-color: #FFF;
+	background-image: url("images/paper-bg.jpg");
 }
 
 .header
@@ -20,12 +21,12 @@ body
 
 .chat-intro
 {
-	background-color: #FFF;
+	/* background-color: #fffdf6; */
 }
 
 .band-1, .band-2, .band-3
 {
-	background-color: #FFF;
+	/* background-color: #fffdf6; */
 }
 
 .band-pre-footer

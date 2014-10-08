@@ -327,7 +327,7 @@ module.exports = function(grunt)
 			},
 			get_links:
 			{
-				cmd: 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/22097791/links.xml"',
+				cmd: 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/links.xml"',
 				callback: function (error, stdout, stderr)
 				{
 					var response_code = get_http_status(stdout);
@@ -368,7 +368,7 @@ module.exports = function(grunt)
 				cmd: function(what)
 				{
 					session.what = what;
-					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/22097791/' +  what + '/count.xml"';
+					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/' +  what + '/count.xml"';
 				},
 				callback: function (error, stdout, stderr)
 				{
@@ -394,7 +394,7 @@ module.exports = function(grunt)
 			{
 				cmd: function(i)
 				{
-					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/22097791/clicks.xml?page=' + i + '"';
+					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/clicks.xml?page=' + i + '"';
 				},
 				callback: function (error, stdout, stderr)
 				{
@@ -434,7 +434,7 @@ module.exports = function(grunt)
 			{
 				cmd: function(i)
 				{
-					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/22097791/views.xml?page=' + i + '"';
+					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/views.xml?page=' + i + '"';
 				},
 				callback: function (error, stdout, stderr)
 				{
