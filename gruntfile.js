@@ -27,11 +27,11 @@ module.exports = function(grunt)
 	utc.setMinutes(utc.getMinutes() + 1);
 	var blast_time = utc.toISOString().slice(0, -5) + 'Z';
 
-	var this_email 	= grunt.file.readJSON('settings.json');
+	var settings 	= grunt.file.readJSON('settings.json');
 
 	// We should move this code into the concat task
 	var header_template = grunt.file.read('xml/header.template.xml');
-	header_template = header_template.replace('{{EMAIL-NAME}}', this_email.streamsend_name);
+	header_template = header_template.replace('{{EMAIL-NAME}}', settings.streamsend_name);
 	grunt.file.write('xml/header.xml', header_template);
 	
 	var global_config = {
@@ -71,7 +71,7 @@ module.exports = function(grunt)
 
   	grunt.initConfig({
 		global_config: global_config,
-		this_email: this_email,
+		settings: settings,
 		imps: imps,
 		session: session,
 		get_http_status: get_http_status,
@@ -157,15 +157,15 @@ module.exports = function(grunt)
 				{
 					var regex = /Location: http:\/\/app.streamsend.com\/emails\/(\d+)/;
 					var arr = regex.exec(stdout);
-					this_email.id = arr[1];
-					grunt.log.write('Email ID is: ' + this_email.id);
+					settings.id = arr[1];
+					grunt.log.write('Email ID is: ' + settings.id);
 					grunt.log.write();
-					grunt.file.write('settings.json', JSON.stringify(this_email, null, 2)); // Save the email ID, so we can update it next time
+					grunt.file.write('settings.json', JSON.stringify(settings, null, 2)); // Save the email ID, so we can update it next time
 				}
 			},
 			update_on_streamsend:
 			{
-				cmd: 'curl -i -H "Content-Type: application/xml" -X PUT -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/emails/' + this_email.id + '.xml" -d @output/email-inline-4upload.xml'
+				cmd: 'curl -i -H "Content-Type: application/xml" -X PUT -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/emails/' + settings.id + '.xml" -d @output/email-inline-4upload.xml'
 			},
 			list_fields:
 			{
@@ -196,7 +196,7 @@ module.exports = function(grunt)
 				cmd: function()
 				{
 					var listxml = grunt.file.read('xml/list.create.template.xml');
-					listxml = listxml.replace('{{LIST-NAME}}', this_email.streamsend_name + '-Broadcast');
+					listxml = listxml.replace('{{LIST-NAME}}', settings.streamsend_name + '-Broadcast');
 									
 					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/lists.xml" -d "' + listxml + '"';
 				},
@@ -204,10 +204,10 @@ module.exports = function(grunt)
 				{
 					var regex = /Location: http:\/\/app.streamsend.com\/audiences\/2\/lists\/(\d+)/;
 					var arr = regex.exec(stdout);
-					this_email.list_id = arr[1];
-					grunt.log.write('List ID is: ' + this_email.list_id);
+					settings.list_id = arr[1];
+					grunt.log.write('List ID is: ' + settings.list_id);
 					grunt.log.write();
-					grunt.file.write('settings.json', JSON.stringify(this_email, null, 2)); // Save the list ID
+					grunt.file.write('settings.json', JSON.stringify(settings, null, 2)); // Save the list ID
 				}
 			},
 			upload_custdata:
@@ -237,7 +237,7 @@ module.exports = function(grunt)
 				{
 					session.current_file = i;
 					var impxml = grunt.file.read('xml/import.template.xml');
-					impxml = impxml.replace('{{LIST-ID}}', this_email.list_id);
+					impxml = impxml.replace('{{LIST-ID}}', settings.list_id);
 					impxml = impxml.replace('{{UPLOAD-ID}}', imps[i].upload_id);
 					return 'curl -i -H "Content-Type: application/xml" -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/imports.xml" -d "' + impxml + '"';
 				},
@@ -314,10 +314,10 @@ module.exports = function(grunt)
 							var regex = /Location: http:\/\/app.streamsend.com\/blasts\/(\d+)/;
 							var arr = regex.exec(stdout);
 							var id = arr[1];
-							this_email.blast_id = arr[1];
-							grunt.log.write('Blast ID is: ' + this_email.blast_id);
+							settings.blast_id = arr[1];
+							grunt.log.write('Blast ID is: ' + settings.blast_id);
 							grunt.log.write();
-							grunt.file.write('settings.json', JSON.stringify(this_email, null, 2)); // Save the blast ID
+							grunt.file.write('settings.json', JSON.stringify(settings, null, 2)); // Save the blast ID
 							break;
 						default:
 							console.log('ERROR - Blast could not be scheduled - HTTP Response Code: ' + response_code);
@@ -327,7 +327,7 @@ module.exports = function(grunt)
 			},
 			get_links:
 			{
-				cmd: 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/links.xml"',
+				cmd: 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + settings.blast_id + '/links.xml"',
 				callback: function (error, stdout, stderr)
 				{
 					var response_code = get_http_status(stdout);
@@ -368,7 +368,7 @@ module.exports = function(grunt)
 				cmd: function(what)
 				{
 					session.what = what;
-					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/' +  what + '/count.xml"';
+					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + settings.blast_id + '/' +  what + '/count.xml"';
 				},
 				callback: function (error, stdout, stderr)
 				{
@@ -394,7 +394,7 @@ module.exports = function(grunt)
 			{
 				cmd: function(i)
 				{
-					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/clicks.xml?page=' + i + '"';
+					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + settings.blast_id + '/clicks.xml?page=' + i + '"';
 				},
 				callback: function (error, stdout, stderr)
 				{
@@ -434,7 +434,7 @@ module.exports = function(grunt)
 			{
 				cmd: function(i)
 				{
-					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + this_email.blast_id + '/views.xml?page=' + i + '"';
+					return 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/blasts/' + settings.blast_id + '/views.xml?page=' + i + '"';
 				},
 				callback: function (error, stdout, stderr)
 				{
@@ -478,7 +478,7 @@ module.exports = function(grunt)
 				cmd: function()
 				{
 					var sql = [];
-					session.db_name = 'dmnews_' + this_email.streamsend_name.replace(/-/g, '_');
+					session.db_name = 'dmnews_' + settings.streamsend_name.replace(/-/g, '_');
 					sql.push('DROP DATABASE IF EXISTS ' + session.db_name);
 					sql.push('CREATE DATABASE ' + session.db_name);
 					sql.push('USE ' + session.db_name);
@@ -506,7 +506,7 @@ module.exports = function(grunt)
 			{
 				cmd: function()
 				{
-					session.db_name = 'dmnews_' + this_email.streamsend_name.replace(/-/g, '_');
+					session.db_name = 'dmnews_' + settings.streamsend_name.replace(/-/g, '_');
 					return 'node db_import.js ' + [global_config.db_user, global_config.db_pass, session.db_name].join(' ');
 				},
 				callback: function (error, stdout, stderr)
@@ -555,19 +555,19 @@ module.exports = function(grunt)
 					replacements: [
 						{
 							pattern: '{{FROM-NAME}}',
-							replacement: this_email.from_name
+							replacement: settings.from_name
 						},
 						{
 							pattern: '{{FROM-EMAIL}}',
-							replacement: this_email.from_email
+							replacement: settings.from_email
 						},
 						{
 							pattern: '{{SUBJECT}}',
-							replacement: this_email.subject
+							replacement: settings.subject
 						},
 						{
 							pattern: '{{ID}}',
-							replacement: this_email.id
+							replacement: settings.id
 						},
 						{
 							pattern: '{{BLAST-TIME}}',
@@ -584,23 +584,23 @@ module.exports = function(grunt)
 					replacements: [
 						{
 							pattern: '{{FROM-NAME}}',
-							replacement: this_email.from_name
+							replacement: settings.from_name
 						},
 						{
 							pattern: '{{FROM-EMAIL}}',
-							replacement: this_email.from_email
+							replacement: settings.from_email
 						},
 						{
 							pattern: '{{SUBJECT}}',
-							replacement: this_email.subject
+							replacement: settings.subject
 						},
 						{
 							pattern: '{{ID}}',
-							replacement: this_email.id
+							replacement: settings.id
 						},
 						{
 							pattern: '{{LIST-ID}}',
-							replacement: this_email.list_id
+							replacement: settings.list_id
 						},
 						{
 							pattern: '{{BLAST-TIME}}',
@@ -622,9 +622,9 @@ module.exports = function(grunt)
 	{
 		case 'upload-email':
 			title = 'PREPARE EMAIL AND UPLOAD TO STREAMSEND';
-			if (this_email.id)
+			if (settings.id)
 			{
-				title += '\nUpdating email ' + this_email.id;
+				title += '\nUpdating email ' + settings.id;
 				var etask = 'exec:update_on_streamsend';
 			}
 			else
@@ -688,7 +688,7 @@ module.exports = function(grunt)
 	// Tasks
 	grunt.registerTask('default', 'List available tasks', function() {
 		console.log();
-		console.log('The following tasks are available...');
+		console.log('The following primary tasks are available...');
 		console.log();
 		console.log('grunt upload-email');
 		console.log('grunt list-fields');
@@ -697,9 +697,7 @@ module.exports = function(grunt)
 		console.log('grunt check-import-status');
 		console.log('grunt test');
 		console.log('grunt send');
-		console.log('grunt get-links');
-		console.log('grunt get-clicks');
-		console.log('grunt get-views');
+		console.log('grunt report');
 		console.log();
 	});
 	grunt.registerTask('upload-email', ['copy', 'uncss', 'cssUrlRewrite', 'processhtml', 'premailer', 'concat', etask, 'ftp_push']);
