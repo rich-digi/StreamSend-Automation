@@ -7,8 +7,10 @@ from sys import argv, stdout
 
 fallback = 'dmClub Member'
 
-invalid_matcher = '[^A-Za-z0-9\'\. -]'
+invalid_matcher = '[^A-Za-z\'\. -]'
 camel_matcher 	= '([A-Z][a-z]+){2,}'
+
+reinval = re.compile(invalid_matcher);
 
 class trml:
 	BLACK 	= '\033[30m'
@@ -29,14 +31,6 @@ def make_greeting(title, firstname, lastname, company):
 	lastname	= lastname.strip()
 	company		= company.strip()
 	
-	if re.search(invalid_matcher, firstname + lastname) or re.match('\d+', firstname):
-		#
-		# firstname or lastname contain illegal characters: non alpha-numeric (_.'- and space allowed)
-		# or
-		# firstname is all digits
-		#
-		return fallback
-	
 	# Normalize capitalisation
 	# Check for camel-case in firstname or lastname, and respect if it's there
 	title = title.lower().title()
@@ -48,10 +42,10 @@ def make_greeting(title, firstname, lastname, company):
 		company = company.lower().title()
 	
 	firstnames = re.split('\s|(?<!\d)[,.](?!\d)', firstname)
-	if len(firstnames) and len(firstnames[0]) > 2:
+	if len(firstnames) and test_validity(firstnames[0]):
 		cgn = firstnames[0]
 
-	elif len(lastname) > 2 and title:
+	elif test_validity(lastname) and title:
 		title = re.sub('\.', '', title)
 		if title not in ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr']:
 			return fallback
@@ -65,7 +59,7 @@ def make_greeting(title, firstname, lastname, company):
 			lastname = 'von ' + lastname[4:].title()
 		cgn = '%s %s' % (title, lastname)
 
-	elif len(company) > 3:
+	elif test_validity(company):
 		cgn = company
 
 	else:
@@ -73,6 +67,19 @@ def make_greeting(title, firstname, lastname, company):
 			
 	return cgn
 	
+# --------------------------------------------------------------------------------
+# General name validator
+
+def test_validity(str):
+	# Conditions
+	c1 = len(str) > 2
+	c2 = str not in ['Real', 'Test', 'Name', 'Unspecified']
+	c3 = not re.search(r'(\w)\1{2,}', str)
+	c4 = not re.match(r'.*[_-]$', str)
+	c5 = not reinval.search(str)
+	return c1 and c2 and c3 and c4 and c5
+
+
 # --------------------------------------------------------------------------------
 # process_data function
 
