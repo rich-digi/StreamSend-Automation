@@ -637,7 +637,7 @@ module.exports = function(grunt)
 			title = 'LIST MERGE FIELDS ( numerical ID - name )';
 			break;
 		case 'create-broadcast-list':
-			title = 'CREATE BRAODCAST LIST';
+			title = 'CREATE BROADCAST LIST';
 			break;
 		case 'upload-custdata':
 			title = 'UPLOAD AND IMPORT CUSTOMER DATA';
