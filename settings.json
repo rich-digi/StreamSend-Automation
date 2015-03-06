@@ -1,7 +1,18 @@
 {
-  "streamsend_name": "NYY-MM-A",
-  "subject": "ADD SUBJECT HERE",
-  "from_name": "dmNews: dmClub Customer News",
-  "from_email": "editor@news.dmclub.net",
-  "split": ""
+	"streamsend_root_name": "NYY-MM",
+	"variants": [
+		{
+			"variant": "A",
+			"subject": "ADD SUBJECT HERE",
+			"from_name": "dmNews: dmClub Customer News",
+			"from_email": "editor@news.dmclub.net",
+		},
+		{
+			"variant": "A",
+			"subject": "ADD SUBJECT HERE",
+			"from_name": "dmNews: dmClub Customer News",
+			"from_email": "editor@news.dmclub.net",
+		}
+	},
+	"split": ""
 }
