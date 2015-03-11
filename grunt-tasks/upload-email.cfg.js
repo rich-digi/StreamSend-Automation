@@ -89,30 +89,27 @@ module.exports = {
 		update_on_streamsend:
 		{
 			cmd: 'curl -i -H "Content-Type: application/xml" -X PUT -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/emails/' + settings.id + '.xml" -d @output/email-inline-4upload.xml'
-		},
-		list_fields:
-		{
-			cmd: 'curl -i -H Accept: application/xml -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/audiences/2/fields.xml"',
-			callback: function (error, stdout, stderr)
-			{
-				console.log();
-				var response_code = get_http_status(stdout);
-				if (response_code == '200')
+		}
+	},
+	// Upload images
+	ftp_push: {
+		your_target: {
+			options: {
+				host: global_config.ftp_host,
+				dest: '/www/',
+				port: 21,
+				username: global_config.ftp_user,
+				password: global_config.ftp_pass,
+			},
+			files: [
 				{
-					// Get body XML
-					var parseString = require('xml2js').parseString;
-					arr = stdout.split(/\r?\n\r?\n/, 2);
-					parseString(arr[1], function (err, result) {
-						result.fields.field.forEach(function(f) {
-							console.log(f.id[0] + ' - ' + f.name[0]);
-						});
-					});
+					expand: true,
+					cwd: '.',
+					src: [
+						'output/**'
+					]
 				}
-				else
-				{
-					console.log('An error occurred - fields not returned');					
-				}
-			}
-		},
+			]
+		}
 	}
 }

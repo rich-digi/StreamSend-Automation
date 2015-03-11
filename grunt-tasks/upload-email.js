@@ -4,3 +4,15 @@ module.exports = function(grunt) {
 
 
 
+/*
+if (settings.id)
+{
+	title += '\nUpdating email ' + settings.id;
+	var etask = 'exec:update_on_streamsend';
+}
+else
+{
+	title += '\nInitial Upload';
+	var etask = 'exec:upload_to_streamsend';
+}
+*/

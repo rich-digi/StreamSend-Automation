@@ -1,0 +1,13 @@
+# [Sprint-Feature] - Short summary (< 50 chars) 
+#
+# Describe the problem the commit solves. Justify why you chose
+# the particular solution. Reference the issue number if not
+# addressed in the title.
+#
+# EXAMPLE
+# -------
+# BB1-BCL - Added new BizClub logo
+#
+# We decided to replace the round logo with a square one, because squares are 'in' this year.
+# We also darkened the blue.
+

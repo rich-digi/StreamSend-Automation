@@ -94,7 +94,7 @@ module.exports = function(grunt)
 		imps: imps,
 		session: session,
 		get_http_status: get_http_status,
-		inspect: inspect,
+		inspect: inspect
   	};
 	
 	// -----------------------------------------------------------------------------------------------------------------
@@ -102,21 +102,10 @@ module.exports = function(grunt)
 	// Print the header
 	var task = grunt.cli.tasks[0];
 	var title;
-	var etask = '';
 	switch(task)
 	{
 		case 'upload-email':
 			title = 'PREPARE EMAIL AND UPLOAD TO STREAMSEND';
-			if (settings.id)
-			{
-				title += '\nUpdating email ' + settings.id;
-				var etask = 'exec:update_on_streamsend';
-			}
-			else
-			{
-				title += '\nInitial Upload';
-				var etask = 'exec:upload_to_streamsend';
-			}
 			break;
 		case 'list-fields':
 			title = 'LIST MERGE FIELDS ( numerical ID - name )';
@@ -161,8 +150,11 @@ module.exports = function(grunt)
 	
 	// Load additional config
 	//grunt.util._.extend(config, load_config_by_glob('./grunt-tasks/'));
+	inspect(config);
 	grunt.util._.extend(config, load_config('./grunt-tasks/'+task+'.cfg.js'));
+	inspect(config);
 	grunt.initConfig(config);
+	console.dir(config);
 	
 	// Load the plugins and tasks, JIT-style
 	require('jit-grunt')(grunt)({ customTasksDir: './grunt-tasks' });
