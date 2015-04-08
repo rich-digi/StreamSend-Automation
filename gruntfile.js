@@ -29,11 +29,6 @@ module.exports = function(grunt)
 	utc.setMinutes(utc.getMinutes() + 1);
 	var blast_time = utc.toISOString().slice(0, -5) + 'Z';
 
-	// We should move this code into the concat task
-	var header_template = grunt.file.read('xml/header.template.xml');
-	header_template = header_template.replace('{{EMAIL-NAME}}', settings.streamsend_name);
-	grunt.file.write('xml/header.xml', header_template);
-	
 	var global_config = {
 		streamsend_api_credentials	: n,
 		streamsend_api_base_64		: b,
@@ -54,7 +49,7 @@ module.exports = function(grunt)
  	
 	var load_config = function(file)
 	{
-		object = require(file);
+		object = require(file)(grunt, config);
 		return object;
 	}
 	
@@ -97,6 +92,14 @@ module.exports = function(grunt)
 		inspect: inspect
   	};
 	
+  	var config = {
+		global_config: global_config,
+		settings: settings,
+		imps: imps,
+		session: session,
+		get_http_status: get_http_status
+  	};
+
 	// -----------------------------------------------------------------------------------------------------------------
 	
 	// Print the header
@@ -138,24 +141,16 @@ module.exports = function(grunt)
 			title = 'GET THE VIEWERS';
 			break;
 		default:
+			task = 'default';
 			title = 'LIST AVAILABLE TASKS';
 			break;
 	}
 
-	console.log();
-	console.log('--------------------------------------------------');
-	console.log(title);
-	console.log('--------------------------------------------------');
-	console.log();
-	
 	// Load additional config
 	//grunt.util._.extend(config, load_config_by_glob('./grunt-tasks/'));
-	inspect(config);
 	grunt.util._.extend(config, load_config('./grunt-tasks/'+task+'.cfg.js'));
-	inspect(config);
 	grunt.initConfig(config);
-	console.dir(config);
-	
+
 	// Load the plugins and tasks, JIT-style
 	require('jit-grunt')(grunt)({ customTasksDir: './grunt-tasks' });
 };

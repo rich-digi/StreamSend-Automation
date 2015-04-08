@@ -1,13 +1,26 @@
-# [Sprint-Feature] - Short summary (< 50 chars) 
+# COMMIT MESSAGE FORMAT
+# =====================
+# CommitType: Sprint-MainFeature: Short summary < 50 chars
 #
-# Describe the problem the commit solves. Justify why you chose
-# the particular solution. Reference the issue number if not
-# addressed in the title.
+# Details go here, after a blank line...
+#
+# 
+# IN THE FIRST LINE...
+# --------------------
+# CommitType is one of Dev  (most commits)
+#                      Demo (commits immediately preceding demos/presentations)
+#                      End  (final commits in a sprint, before closing a branch)
+#
+# 'Demo' and 'End' commits should have a qualifier (e.g. Polish 1)
+#
+# Sprint is the TLA (three letter acronym) of the sprint
+# MainFeature is the TLA of the *main* feature the commit relates to
+#
 #
 # EXAMPLE
 # -------
-# BB1-BCL - Added new BizClub logo
+# Demo1 Polish1: BB1-LGO: Updated BizClub logo
 #
-# We decided to replace the round logo with a square one, because squares are 'in' this year.
+# We decided to replace the round logo with a square one, because squares are 'in' this season.
 # We also darkened the blue.
-
+#
