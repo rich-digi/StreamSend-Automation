@@ -91,14 +91,6 @@ module.exports = function(grunt)
 		get_http_status: get_http_status,
 		inspect: inspect
   	};
-	
-  	var config = {
-		global_config: global_config,
-		settings: settings,
-		imps: imps,
-		session: session,
-		get_http_status: get_http_status
-  	};
 
 	// -----------------------------------------------------------------------------------------------------------------
 	

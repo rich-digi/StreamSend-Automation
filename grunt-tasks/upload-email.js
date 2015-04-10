@@ -18,7 +18,7 @@ module.exports = function(grunt)
 		return function()
 		{
 			var header_template = grunt.file.read('xml/header.template.xml');
-			variants.map(function(variant, i)
+			variants.map(function(variant)
 			{
 				var pre = variant.variant;
 				var email_name = root_name + '-' + pre;
@@ -37,7 +37,6 @@ module.exports = function(grunt)
 			variants.map(function(variant, i)
 			{
 				subtitle = variant.id ? 'Updating email ' + variant.id : 'Initial Upload';
-				console.log();
 				console.log(subtitle);
 				if (variant.id)
 				{
@@ -49,26 +48,26 @@ module.exports = function(grunt)
 					grunt.task.run('exec:upload_to_streamsend:' + variant.variant + ':' + i);
 				}
 			});
+			console.log();
 		}
 	}
 	var upload = upload_partial(variants);
 	
 	grunt.registerTask('upload-email', function()
 	{
-		//grunt.task.run('copy');
-		//grunt.task.run('uncss');
-		//grunt.task.run('cssUrlRewrite');
-		//grunt.task.run('processhtml');
-		//grunt.task.run('premailer');
+		grunt.task.run('copy');
+		grunt.task.run('uncss');
+		grunt.task.run('cssUrlRewrite');
+		grunt.task.run('processhtml');
+		grunt.task.run('premailer');
 		gen_xml_headers();
-		variants.map(function(variant, i)
+		variants.map(function(variant)
 		{
 			var pre = variant.variant;
 			grunt.config.data.concat.dist.files.push(generate_concat_instruction(pre));
 		});
 		grunt.task.run('concat');
-		console.log('HERE');
-		//grunt.task.run('ftp_push');
-		//upload();
+		grunt.task.run('ftp_push');
+		upload();
 	});
 };

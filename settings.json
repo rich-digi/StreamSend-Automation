@@ -6,14 +6,16 @@
       "subject": "ADD SUBJECT HERE",
       "from_name": "dmNews: dmClub Customer News",
       "from_email": "editor@news.dmclub.net",
-      "id": "978"
+      "id": "982",
+      "list_id": "208"
     },
     {
       "variant": "B",
       "subject": "ADD SUBJECT HERE",
       "from_name": "dmNews: dmClub Customer News",
       "from_email": "editor@news.dmclub.net",
-      "id": "980"
+      "id": "984",
+      "list_id": "210"
     }
   ],
   "split": ""

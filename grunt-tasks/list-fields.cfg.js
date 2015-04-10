@@ -19,8 +19,7 @@ module.exports = function(grunt, config)
 						arr = stdout.split(/\r?\n\r?\n/, 2);
 						parseString(arr[1], function (err, result) {
 							result.fields.field.forEach(function(f) {
-								console.dir(f);
-								console.log(f.id[0] + ' - ' + f.name[0]);
+								console.log(f.id[0]._ + ' - ' + f.name[0]);
 							});
 						});
 					}

@@ -121,7 +121,6 @@ module.exports = function(grunt, config)
 			{
 				cmd: function(pre)
 				{
-					var pre = v.variant;
 					return 'curl -i -H "Content-Type: application/xml" -X PUT -u ' + global_config.streamsend_api_credentials + ' "https://app.streamsend.com/emails/' + settings.id + '.xml" -d @output/' + pre + '-inline-4upload.xml';
 				}
 			}
