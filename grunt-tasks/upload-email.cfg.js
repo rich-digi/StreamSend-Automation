@@ -92,8 +92,7 @@ module.exports = function(grunt, config)
 				separator: ''
 			},
 			dist: {
-				src: ['xml/header-<%= pre %>.xml', 'output/<%= pre %>-inline.html', 'xml/middle.xml', 'output/<%= pre %>-inline.txt', 'xml/footer.xml'],
-				dest: 'output/<%= pre %>-inline-4upload.xml'
+				files: [] // Dynamically generated at runtime
 			}
 		},
 		exec:

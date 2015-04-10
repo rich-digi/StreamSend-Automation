@@ -4,7 +4,15 @@ module.exports = function(grunt)
 	var root_name = settings.streamsend_root_name;
 	var variants = settings.variants;
 	
-	concat_partial = function(variants)
+	var generate_concat_instruction = function(pre)
+	{
+		return {
+					src: ['xml/header-'+pre+'.xml', 'output/'+pre+'-inline.html', 'xml/middle.xml', 'output/'+pre+'-inline.txt', 'xml/footer.xml'],
+					dest: 'output/'+pre+'-inline-4upload.xml'
+				}
+	}
+
+	var gen_xml_headers_partial = function(variants)
 	{
 		// Partial application
 		return function()
@@ -13,22 +21,15 @@ module.exports = function(grunt)
 			variants.map(function(variant, i)
 			{
 				var pre = variant.variant;
-				var email_name = root_name '-' + pre;
+				var email_name = root_name + '-' + pre;
 				var header = header_template.replace('{{EMAIL-NAME}}', email_name);
 				grunt.file.write('xml/header-' + pre + '.xml', header);
-				var cc = function()
-				{
-					// Partila again
-					grunt.config.data.pre = pre;
-					grunt.task.run('concat');
-				}
-				
 			});
 		}
 	}
-	var concat = concat_partial(variants);
+	var gen_xml_headers = gen_xml_headers_partial(variants);
 
-	upload_partial = function(variants)
+	var upload_partial = function(variants)
 	{
 		// Partial application
 		return function()
@@ -54,12 +55,19 @@ module.exports = function(grunt)
 	
 	grunt.registerTask('upload-email', function()
 	{
-		grunt.task.run('copy');
-		grunt.task.run('uncss');
-		grunt.task.run('cssUrlRewrite');
-		grunt.task.run('processhtml');
-		grunt.task.run('premailer');
-		concat();
+		//grunt.task.run('copy');
+		//grunt.task.run('uncss');
+		//grunt.task.run('cssUrlRewrite');
+		//grunt.task.run('processhtml');
+		//grunt.task.run('premailer');
+		gen_xml_headers();
+		variants.map(function(variant, i)
+		{
+			var pre = variant.variant;
+			grunt.config.data.concat.dist.files.push(generate_concat_instruction(pre));
+		});
+		grunt.task.run('concat');
+		console.log('HERE');
 		//grunt.task.run('ftp_push');
 		//upload();
 	});
