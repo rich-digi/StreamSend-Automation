@@ -1,3 +1,59 @@
-module.exports = function(grunt) {
-	grunt.registerTask('send', ['string-replace:send', 'exec:blast']);
+module.exports = function(grunt)
+{
+	var global_config 	= grunt.config.data.global_config;
+	var settings 		= grunt.config.data.settings;
+	var variants 		= settings.variants;
+
+	var generate_substitution_instruction = function(variant)
+	{
+		var pre = variant.variant;
+		var opx = 'output/blast-' + pre + '.xml';
+		var obj = { files: {} };
+		obj.files[opx] = 'xml/blast.send.template.xml';
+		obj.options = {
+							replacements: [
+								{
+									pattern: '{{FROM-NAME}}',
+									replacement: variant.from_name
+								},
+								{
+									pattern: '{{FROM-EMAIL}}',
+									replacement: variant.from_email
+								},
+								{
+									pattern: '{{SUBJECT}}',
+									replacement: variant.subject
+								},
+								{
+									pattern: '{{ID}}',
+									replacement: variant.id
+								},
+								{
+									pattern: '{{LIST-ID}}',
+									replacement: variant.list_id
+								},
+								{
+									pattern: '{{BLAST-TIME}}',
+									replacement: global_config.schedule
+								}
+							]
+						};
+		return obj;
+	}
+
+	grunt.registerTask('test', function()
+	{
+		variants.map(function(variant)
+		{
+			var pre = variant.variant;
+			grunt.config.data['string-replace'][pre] = generate_substitution_instruction(variant);
+		});
+		grunt.task.run('string-replace');
+		
+		variants.map(function(variant, i)
+		{
+			var pre = variant.variant;
+			grunt.task.run('exec:blast:' + i);
+		});
+	});
 }; 

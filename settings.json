@@ -3,20 +3,15 @@
   "variants": [
     {
       "variant": "A",
-      "subject": "ADD SUBJECT HERE",
+      "subject": "VARIANT A - ADD SUBJECT HERE",
       "from_name": "dmNews: dmClub Customer News",
-      "from_email": "editor@news.dmclub.net",
-      "id": "982",
-      "list_id": "208"
+      "from_email": "editor@news.dmclub.net"
     },
     {
       "variant": "B",
-      "subject": "ADD SUBJECT HERE",
+      "subject": "VARIANT B - ADD SUBJECT HERE",
       "from_name": "dmNews: dmClub Customer News",
-      "from_email": "editor@news.dmclub.net",
-      "id": "984",
-      "list_id": "210"
+      "from_email": "editor@news.dmclub.net"
     }
-  ],
-  "split": ""
+  ]
 }

@@ -1,0 +1,20 @@
+<blast>
+	<from>
+		<name>{{FROM-NAME}}</name>
+		<email-address>{{FROM-EMAIL}}</email-address>
+	</from>
+	<to>
+		<audience-id>2</audience-id>
+		<include-lists>216</include-lists>
+	</to>
+	<subject>{{SUBJECT}}</subject>
+	<body>
+		<email-id>{{ID}}</email-id>
+	</body>
+	<options>
+		<track-views>true</track-views>
+		<track-clicks>true</track-clicks>
+		<include-social-bar>false</include-social-bar>
+	</options>
+	<scheduled-for>{{BLAST-TIME}}</scheduled-for>
+</blast>

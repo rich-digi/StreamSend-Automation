@@ -6,19 +6,13 @@ module.exports = function(grunt)
 	{
 		grunt.log.writeln('Uploading the Customer Data TSVs to Streamsend and Initiating Import');
 		imps = {}; // Reset this for each import cycle
-		
-		
-		if (settings.variants.length > 1)
+		variants.map(function(variant)
 		{
-			var files = grunt.file.expand('custdata/'+ settings.split +'-split-*.tsv');
-		}
-		else
-		{
-			var files = grunt.file.expand('custdata/processed*.tsv');
-		}
-		console.dir(files);
-		files.forEach(function(f) { 
-			grunt.task.run('exec:upload_custdata:' + f);
+			var pre = variant.variant;
+			var files = grunt.file.expand('custdata-split/' + pre + '-split-*.tsv');
+			console.dir(files);
+			// Upload each file f and initiate import to correct list
+			files.forEach(function(f) { grunt.task.run('exec:upload_custdata:' + f + ':' + variant.list_id); });
 		});
 	});
 };

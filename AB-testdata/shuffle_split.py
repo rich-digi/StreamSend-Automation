@@ -125,13 +125,14 @@ def split(sourcefile, temp_dir, max_lines = MAX_LINES_PER_FILE):
 	print
 	print 'SPLITTING %s INTO MULTIPLE FILES (Max %d lines each, excluding header)' % (sourcefile, max_lines)
 	print
-	ext_free_name = os.path.basename(sourcefile)
-	suffix 		  = os.path.splitext(sourcefile)[1]
+	path_free_name = os.path.basename(sourcefile)
+	prefix 		   = os.path.splitext(path_free_name)[0]
+	suffix 		   = os.path.splitext(path_free_name)[1]
 	with open(sourcefile, 'r') as datafile:
 		header = datafile.next()
 		groups = groupby(datafile, key=lambda k, line=count(): next(line) // max_lines)
 		for k, group in groups:
-			output_name = os.path.normpath(os.path.join(temp_dir + os.sep, '%s-%s%s' % (ext_free_name, k, suffix)))
+			output_name = os.path.normpath(os.path.join(temp_dir + os.sep, '%s-%s%s' % (prefix, k, suffix)))
 			print 'Writing %s' % output_name
 			with open(output_name, 'a') as outfile:
 				outfile.write(header)	
@@ -157,15 +158,15 @@ if __name__ == '__main__':
 		else:
 			if os.path.isdir('temp'):
 				shutil.rmtree('temp')
-			if os.path.isdir('output'):
-				shutil.rmtree('output')
+			if os.path.isdir('custdata-split'):
+				shutil.rmtree('custdata-split')
 			os.mkdir('temp')
-			os.mkdir('output')
+			os.mkdir('custdata-split')
 			combine(inpdir, suffix, 'temp/_combined.tsv')
 			sharded_shuffle('temp/_combined.'+suffix, 'temp/_shuffled.'+suffix)
 			deal('temp/_shuffled.'+suffix, 'temp/', pieces)
 			for dealt_file in glob.glob(os.path.join('temp/', '*-split.' + suffix)):
-				split(dealt_file, 'output', MAX_LINES_PER_FILE)
+				split(dealt_file, 'custdata-split', MAX_LINES_PER_FILE)
 			print
 			print 'DONE'
 			print
