@@ -3,5 +3,6 @@ node_modules
 output
 reports
 temp
+xml/header-*.xml
 
 imps.json
