@@ -9,8 +9,8 @@ module.exports = function(grunt)
 		var pre = variant.variant;
 		var opx = 'output/blast-' + pre + '.test.xml';
 		var obj = { files: {} };
-		// obj.files[opx] = 'xml/blast.test.rich.template.xml'; // Send tests to 'rich@apewave.com'only
-		obj.files[opx] = 'xml/blast.test.template.xml';
+		obj.files[opx] = 'xml/blast.test.rich.template.xml'; // Send tests to 'rich@apewave.com'only
+		// obj.files[opx] = 'xml/blast.test.template.xml';	 // Send tests to test list
 		obj.options = {
 							replacements: [
 								{

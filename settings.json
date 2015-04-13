@@ -5,13 +5,19 @@
       "variant": "A",
       "subject": "VARIANT A - ADD SUBJECT HERE",
       "from_name": "dmNews: dmClub Customer News",
-      "from_email": "editor@news.dmclub.net"
+      "from_email": "editor@news.dmclub.net",
+      "id": "998",
+      "list_id": "218",
+      "blast_id": "23711351"
     },
     {
       "variant": "B",
       "subject": "VARIANT B - ADD SUBJECT HERE",
       "from_name": "dmNews: dmClub Customer News",
-      "from_email": "editor@news.dmclub.net"
+      "from_email": "editor@news.dmclub.net",
+      "id": "1000",
+      "list_id": "220",
+      "blast_id": "23711353"
     }
   ]
 }

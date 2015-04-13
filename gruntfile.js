@@ -87,6 +87,7 @@ module.exports = function(grunt)
 		global_config: global_config,
 		settings: settings,
 		imps: imps,
+		temp: {},
 		get_http_status: get_http_status,
 		inspect: inspect
   	};

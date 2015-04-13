@@ -1,16 +1,35 @@
 module.exports = function(grunt)
 {
-	// Overall 'report' task
-	grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:compile_primary_dmids', 'exec:db_create', 'exec:db_import']);
+	var global_config 	= grunt.config.data.global_config;
+	var settings 		= grunt.config.data.settings;
+	var variants 		= settings.variants;
+	var temp 			= grunt.config.data.temp;
 
+	// ---------------------
+	// Overall 'report' task
+	
+	// grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:compile_primary_dmids', 'exec:db_create', 'exec:db_import']);
+	grunt.registerTask('report', ['get-links']);
+	
+	// -------------------
 	// Reporting sub-tasks
-	grunt.registerTask('get-links', ['exec:get_links']);
+
+	grunt.registerTask('get-links', function()
+	{
+		variants.map(function(variant, i)
+		{
+			grunt.task.run('exec:get_links:' + i);
+		});
+	});
+	
 	grunt.registerTask('get-clicks', ['exec:count_clicks_or_views:clicks', 'get-c-or-v-looper']);
+	
 	grunt.registerTask('get-views',  ['exec:count_clicks_or_views:views',  'get-c-or-v-looper']);
+
 	grunt.registerTask('get-c-or-v-looper', 'Loop through the pages of clicks/views, downloading each in turn', function() {
 		// This task is called by get-clicks or get-views to loop through the paginated XML, downloading each page in turn
-		var what = session.what; // 'clicks' or 'views'
-		var pages = Math.ceil(session[what] / 100);
+		var what = temp.what; // 'clicks' or 'views'
+		var pages = Math.ceil(temp[what] / 100);
 		console.log('There are ' + pages + ' pages of ' + what + ' (max 100 per page)');
 		if (what == 'clicks')
 		{
@@ -21,25 +40,26 @@ module.exports = function(grunt)
 					links2[link_id] = link.url;
 				});
 			});
-			session.links = links2;
-			session.clicks = [];
+			temp.links = links2;
+			temp.clicks = [];
 		}
 		else
 		{
-			session.views  = [];
+			temp.views  = [];
 		}
-		session.people = [];
+		temp.people = [];
 		for (var i = 1; i <= pages; i++)
 		{
 			grunt.task.run('exec:get_' + what + ':' + i);
 		}
 		grunt.task.run('get-' + what + '-report');
 	});
+	
 	grunt.registerTask('get-clicks-report', 'Report of the result of compiling all the clicks', function() {
 		var _ = require('underscore')._;
 
-		var clicks  = session.clicks;
-		var people  = session.people;
+		var clicks  = temp.clicks;
+		var people  = temp.people;
 
 		var unclks  = []; // Unique clicks (emails by link)
 		var unclks2 = [];
@@ -78,9 +98,10 @@ module.exports = function(grunt)
 			people[email].forEach(function(link) { console.log('      ' + link); } );
 		}
 	});
+	
 	grunt.registerTask('get-views-report', 'Report of the result of compiling all the views', function() {
 		// var _ = require('underscore')._;
-		var views   = session.views;
+		var views = temp.views;
 		grunt.file.write('reports/views.json',  JSON.stringify(views, null, 2));
 		console.log();
 		console.log('Viewers');
