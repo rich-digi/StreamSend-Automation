@@ -1,0 +1,62 @@
+{
+  "A-split-0": {
+    "upload_id": "836",
+    "list_id": "222",
+    "import_id": "760",
+    "status": "completed - attempted 7500 rows / 3 invalid"
+  },
+  "A-split-1": {
+    "upload_id": "838",
+    "list_id": "222",
+    "import_id": "762",
+    "status": "completed - attempted 7500 rows / 4 invalid"
+  },
+  "A-split-2": {
+    "upload_id": "840",
+    "list_id": "222",
+    "import_id": "764",
+    "status": "completed - attempted 7500 rows / 2 invalid"
+  },
+  "A-split-3": {
+    "upload_id": "842",
+    "list_id": "222",
+    "import_id": "766",
+    "status": "completed - attempted 7500 rows / 1 invalid"
+  },
+  "A-split-4": {
+    "upload_id": "844",
+    "list_id": "222",
+    "import_id": "768",
+    "status": "completed - attempted 2241 rows / 1 invalid"
+  },
+  "B-split-0": {
+    "upload_id": "846",
+    "list_id": "224",
+    "import_id": "770",
+    "status": "completed - attempted 7500 rows / 0 invalid"
+  },
+  "B-split-1": {
+    "upload_id": "848",
+    "list_id": "224",
+    "import_id": "772",
+    "status": "completed - attempted 7500 rows / 1 invalid"
+  },
+  "B-split-2": {
+    "upload_id": "850",
+    "list_id": "224",
+    "import_id": "774",
+    "status": "completed - attempted 7500 rows / 0 invalid"
+  },
+  "B-split-3": {
+    "upload_id": "852",
+    "list_id": "224",
+    "import_id": "776",
+    "status": "completed - attempted 7500 rows / 3 invalid"
+  },
+  "B-split-4": {
+    "upload_id": "854",
+    "list_id": "224",
+    "import_id": "778",
+    "status": "completed - attempted 2242 rows / 3 invalid"
+  }
+}
