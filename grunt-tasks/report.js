@@ -9,7 +9,8 @@ module.exports = function(grunt)
 	// Overall 'report' task
 	
 	// grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:compile_primary_dmids', 'exec:db_create', 'exec:db_import']);
-	grunt.registerTask('report', ['get-links']);
+	//grunt.registerTask('report', ['get-links',  'get-clicks']);
+	grunt.registerTask('report', ['get-clicks']);
 	
 	// -------------------
 	// Reporting sub-tasks
@@ -22,18 +23,26 @@ module.exports = function(grunt)
 		});
 	});
 	
-	grunt.registerTask('get-clicks', ['exec:count_clicks_or_views:clicks', 'get-c-or-v-looper']);
-	
+	grunt.registerTask('get-clicks', function()
+	{
+		variants.map(function(variant, i)
+		{
+			grunt.task.run('exec:count_clicks_or_views:' + i +':clicks');
+			grunt.task.run('get-c-or-v-looper:' + i +':clicks');
+		});
+	});
+
 	grunt.registerTask('get-views',  ['exec:count_clicks_or_views:views',  'get-c-or-v-looper']);
 
-	grunt.registerTask('get-c-or-v-looper', 'Loop through the pages of clicks/views, downloading each in turn', function() {
+	grunt.registerTask('get-c-or-v-looper', 'Loop through the pages of clicks/views, downloading each in turn', function(i, what)
+	{
 		// This task is called by get-clicks or get-views to loop through the paginated XML, downloading each page in turn
-		var what = temp.what; // 'clicks' or 'views'
 		var pages = Math.ceil(temp[what] / 100);
 		console.log('There are ' + pages + ' pages of ' + what + ' (max 100 per page)');
+		var variant = settings.variants[i].variant;
 		if (what == 'clicks')
 		{
-			var links = grunt.file.readJSON('reports/links.json');
+			var links = grunt.file.readJSON('reports/links-' + variant + '.json');
 			var links2 = {};
 			links.forEach(function(link) {
 				link.link_ids.forEach(function(link_id) {

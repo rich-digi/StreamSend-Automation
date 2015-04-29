@@ -3,17 +3,20 @@
   "variants": [
     {
       "variant": "A",
-      "subject": "VARIANT A - ADD SUBJECT HERE",
+      "subject": "Love in an elevator! dmBizClub's Pitch Your Business in 15 secs",
       "from_name": "dmNews: dmClub Customer News",
       "from_email": "editor@news.dmclub.net",
-      "list_id": "222"
+      "list_id": "222",
+      "blast_id": "23762805"
     },
     {
       "variant": "B",
-      "subject": "VARIANT B - ADD SUBJECT HERE",
+      "subject": "dmClub - Putting the Biz in your Pocket",
       "from_name": "dmNews: dmClub Customer News",
       "from_email": "editor@news.dmclub.net",
-      "list_id": "224"
+      "list_id": "224",
+      "blast_id": "23762819"
+
     }
   ]
 }

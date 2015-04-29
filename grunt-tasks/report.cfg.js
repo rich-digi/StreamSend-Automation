@@ -62,6 +62,7 @@ module.exports = function(grunt, config)
 			{
 				cmd: function(i, what)
 				{
+					console.dir(settings.variants[i]);
 					var blast_id = settings.variants[i].blast_id;
 					var c = 'echo INDEX=' + i + '\n';
 					c += 'echo CLICKSORVIEWS=' + what + '\n';
