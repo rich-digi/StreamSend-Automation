@@ -8,14 +8,13 @@ module.exports = function(grunt)
 	// ---------------------
 	// Overall 'report' task
 	
-	//grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:compile_primary_dmids', 'create-report-databases', 'import-db-data']);
-	//grunt.registerTask('report', ['get-links']);
-	//grunt.registerTask('report', ['get-clicks']);
-	//grunt.registerTask('report', ['get-views']);
-	//grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views']);
-	//grunt.registerTask('report', ['exec:compile_primary_dmids']);
-	//grunt.registerTask('report', ['create-report-databases']);
-	grunt.registerTask('report', ['import-db-data']);
+	grunt.registerTask('report', [	'get-links',
+									'get-clicks',
+									'get-views',
+									'exec:compile_primary_dmids',
+									'create-report-databases',
+									'import-db-data']
+						);
 	
 	// -------------------
 	// Reporting sub-tasks
