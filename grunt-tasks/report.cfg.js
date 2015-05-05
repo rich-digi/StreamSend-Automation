@@ -49,7 +49,7 @@ module.exports = function(grunt, config)
 									links2.push({url: link, link_ids: links[link]});
 								}
 								// Save the links & link ids
-								grunt.file.write('reports/links-' + pre + '.json', JSON.stringify(links2, null, 2));
+								grunt.file.write('reports/' + pre + '-links.json', JSON.stringify(links2, null, 2));
 							});					
 							break;
 						default:
@@ -230,7 +230,7 @@ module.exports = function(grunt, config)
 				{
 					var pre = settings.variants[i].variant;
 					var db_name = 'dmnews_' + settings.streamsend_root_name.replace(/-/g, '_') + '_' + pre;
-					return 'node db_import.js ' + [global_config.db_user, global_config.db_pass, db_name].join(' ');
+					return 'node db_import.js ' + [pre, global_config.db_user, global_config.db_pass, db_name].join(' ');
 				},
 				callback: function (error, stdout, stderr)
 				{

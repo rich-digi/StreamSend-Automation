@@ -8,9 +8,14 @@ module.exports = function(grunt)
 	// ---------------------
 	// Overall 'report' task
 	
-	// grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:compile_primary_dmids', 'exec:db_create', 'exec:db_import']);
-	//grunt.registerTask('report', ['get-links',  'get-clicks']);
-	grunt.registerTask('report', ['get-clicks']);
+	//grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views', 'exec:compile_primary_dmids', 'create-report-databases', 'import-db-data']);
+	//grunt.registerTask('report', ['get-links']);
+	//grunt.registerTask('report', ['get-clicks']);
+	//grunt.registerTask('report', ['get-views']);
+	//grunt.registerTask('report', ['get-links', 'get-clicks', 'get-views']);
+	//grunt.registerTask('report', ['exec:compile_primary_dmids']);
+	//grunt.registerTask('report', ['create-report-databases']);
+	grunt.registerTask('report', ['import-db-data']);
 	
 	// -------------------
 	// Reporting sub-tasks
@@ -32,17 +37,24 @@ module.exports = function(grunt)
 		});
 	});
 
-	grunt.registerTask('get-views',  ['exec:count_clicks_or_views:views',  'get-c-or-v-looper']);
+	grunt.registerTask('get-views', function()
+	{
+		variants.map(function(variant, i)
+		{
+			grunt.task.run('exec:count_clicks_or_views:' + i +':views');
+			grunt.task.run('get-c-or-v-looper:' + i +':views');
+		});
+	});
 
-	grunt.registerTask('get-c-or-v-looper', 'Loop through the pages of clicks/views, downloading each in turn', function(i, what)
+	grunt.registerTask('get-c-or-v-looper', 'Loop through the pages of clicks/views, downloading each in turn', function(variant_index, what)
 	{
 		// This task is called by get-clicks or get-views to loop through the paginated XML, downloading each page in turn
 		var pages = Math.ceil(temp[what] / 100);
 		console.log('There are ' + pages + ' pages of ' + what + ' (max 100 per page)');
-		var variant = settings.variants[i].variant;
+		var variant = settings.variants[variant_index].variant;
 		if (what == 'clicks')
 		{
-			var links = grunt.file.readJSON('reports/links-' + variant + '.json');
+			var links = grunt.file.readJSON('reports/' + variant + '-links.json');
 			var links2 = {};
 			links.forEach(function(link) {
 				link.link_ids.forEach(function(link_id) {
@@ -59,12 +71,12 @@ module.exports = function(grunt)
 		temp.people = [];
 		for (var i = 1; i <= pages; i++)
 		{
-			grunt.task.run('exec:get_' + what + ':' + i);
+			grunt.task.run('exec:get_' + what + ':' + variant_index + ':' + i);
 		}
-		grunt.task.run('get-' + what + '-report');
+		grunt.task.run('get-' + what + '-report' +':' + variant);
 	});
 	
-	grunt.registerTask('get-clicks-report', 'Report of the result of compiling all the clicks', function() {
+	grunt.registerTask('get-clicks-report', 'Report of the result of compiling all the clicks', function(variant) {
 		var _ = require('underscore')._;
 
 		var clicks  = temp.clicks;
@@ -72,7 +84,9 @@ module.exports = function(grunt)
 
 		var unclks  = []; // Unique clicks (emails by link)
 		var unclks2 = [];
-		for (link in clicks) unclks[link] = _.sortBy(_.uniq(_.pluck(clicks[link], 'email')), function(email) { return email; }); // Remove duplicates, and put emails in alphabetical order
+		
+		// Remove duplicates, and put emails in alphabetical order
+		for (link in clicks) unclks[link] = _.sortBy(_.uniq(_.pluck(clicks[link], 'email')), function(email) { return email; });
 		for (link in unclks) unclks2.push({url: link, emails: unclks[link]});
 
 		var clicks2 = [];
@@ -82,9 +96,9 @@ module.exports = function(grunt)
 		for (email in people) people[email] = _.uniq(people[email]);
 		for (email in people) people2.push({email: email, links: people[email]});
 
-		grunt.file.write('reports/unclks.json', JSON.stringify(unclks2, null, 2)); // Unique clicks by link
-		grunt.file.write('reports/clicks.json', JSON.stringify(clicks2, null, 2)); // All clicks, including duplicates
-		grunt.file.write('reports/people.json', JSON.stringify(people2, null, 2)); // Links clicked by email
+		grunt.file.write('reports/' + variant + '-unclks.json', JSON.stringify(unclks2, null, 2)); // Unique clicks by link
+		grunt.file.write('reports/' + variant + '-clicks.json', JSON.stringify(clicks2, null, 2)); // All clicks, including duplicates
+		grunt.file.write('reports/' + variant + '-people.json', JSON.stringify(people2, null, 2)); // Links clicked by email
 	
 		console.log();
 		console.log('Clicker\'s email by link');
@@ -108,10 +122,10 @@ module.exports = function(grunt)
 		}
 	});
 	
-	grunt.registerTask('get-views-report', 'Report of the result of compiling all the views', function() {
+	grunt.registerTask('get-views-report', 'Report of the result of compiling all the views', function(variant) {
 		// var _ = require('underscore')._;
 		var views = temp.views;
-		grunt.file.write('reports/views.json',  JSON.stringify(views, null, 2));
+		grunt.file.write('reports/' + variant + '-views.json',  JSON.stringify(views, null, 2));
 		console.log();
 		console.log('Viewers');
 		console.log('-------');
@@ -121,6 +135,22 @@ module.exports = function(grunt)
 			console.log(view.time + ' - ' + view.email);
 		});
 		console.log();
+	});
+
+	grunt.registerTask('create-report-databases', function()
+	{
+		variants.map(function(variant, i)
+		{
+			grunt.task.run('exec:db_create:' + i);
+		});
+	});
+
+	grunt.registerTask('import-db-data', function()
+	{
+		variants.map(function(variant, i)
+		{
+			grunt.task.run('exec:db_import:' + i);
+		});
 	});
 
 }; 

@@ -1,16 +1,19 @@
 // ---------------------------------------------------------------------------------------------------------------------
-// Load the details of the people who clicked into the 'dmnews_N_YY_MM_A' database
+// Load the details of the people who clicked into the 'dmnews_N_YY_MM_<VARIANT>' database
 // ---------------------------------------------------------------------------------------------------------------------
 
 // Get command-line args
 var args = process.argv.slice(2);
 
+// Variant
+var variant = args[0];
+
 // Database credentials
 var dbcred = {};
 dbcred.host = 'localhost';
-dbcred.user = args[0];
-dbcred.pass = args[1];
-dbcred.daba = args[2];
+dbcred.user = args[1];
+dbcred.pass = args[2];
+dbcred.daba = args[3];
 
 var fs 		= require('fs');
 var mysql 	= require('mysql');
@@ -22,7 +25,7 @@ var step = {};
 
 step.add_clicks = function(outercallback)
 {
-	fs.readFile(__dirname + '/reports/clicks.json', 'utf8', function (err, data) {
+	fs.readFile(__dirname + '/reports/' + variant + '-clicks.json', 'utf8', function (err, data) {
 		if (err) {
 			console.log('Error: ' + err);
 			db.end();
@@ -63,7 +66,7 @@ step.add_clicks = function(outercallback)
 
 step.add_views = function(outercallback)
 {
-	fs.readFile(__dirname + '/reports/views.json', 'utf8', function (err, data) {
+	fs.readFile(__dirname + '/reports/' + variant + '-views.json', 'utf8', function (err, data) {
 		if (err) {
 			console.log('Error: ' + err);
 			db.end();
