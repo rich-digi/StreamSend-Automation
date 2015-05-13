@@ -25,7 +25,7 @@ SELECT Email, PrimaryDMID, Time, IPAddress, UserAgent
 	ORDER BY PrimaryDMID
 
 #
-# Count clicks by link
+# Count clicks by tagged link
 #
 
 UPDATE Links JOIN 
@@ -35,3 +35,17 @@ UPDATE Links JOIN
 			GROUP BY LinkID ORDER BY LinkID
 	) AS DT
 ON Links.LinkID = DT.LinkID SET Links.Clicks = DT.Clicks
+
+
+#
+# Count clicks by destination
+#
+CREATE TABLE LinksTemp SELECT * FROM Links;
+UPDATE LinksTemp
+	SET URL = IF(POSITION('#' IN URL), SUBSTRING(URL, 1, LENGTH(URL) - (LENGTH(URL) - POSITION('#' IN URL)) - 2), URL);
+CREATE TABLE LinksAggregated
+	SELECT URL, SUM(UniqueClicks) AS AggregatedUniqueClicks
+	FROM LinksTemp
+	GROUP BY URL
+	ORDER BY AggregatedUniqueClicks DESC;
+DROP TABLE LinksTemp;
